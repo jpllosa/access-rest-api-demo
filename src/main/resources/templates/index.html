@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+function ajaxPostcodeRequest() {
+	var postcode = $("#ajax-postcode").val();
+	
+	$.ajax({
+		url: "https://api.postcodes.io/postcodes/" + postcode,
+		success: function(response) {
+			// locate primary_care_trust from json response
+			// var jsonNode = JSON.parse(response); // no need response ain't a string
+			$("#api-result").text("Viola! Primary Care Trust: " + response.result.primary_care_trust);
+			},
+		error: function(xhr, status, error) {
+			$("#api-result").text("Status: " + status + ", Error: " + error);
+			}
+		});
+	
+}
+
+</script>
+
+<title>Demo Page</title>
+</head>
+	<body>
+		<div class="container">
+			<form action="/postcode">
+				Postcode: <br> <input type="text" name="p" value=""> <br>
+				<br> <input type="submit" value="Submit">
+			</form>
+			<hr>
+			<div>
+				Ajax Postcode: <br> <input id="ajax-postcode" type="text"
+					placeholder="SO15 2DN" value=""> <br>
+				<br>
+				<button type="button" onclick="ajaxPostcodeRequest()">Submit</button>
+			</div>
+			<p id="api-result">Primary Care Trust:</p>
+		</div>
+	</body>
+</html>
